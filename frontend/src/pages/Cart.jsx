@@ -1,57 +1,77 @@
 import { useCartStore } from '../store/useCartStore';
 import { Trash2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Cart() {
   const { cart, removeFromCart, clearCart } = useCartStore();
 
-  const total = cart.reduce((acc, item) => acc + item.product.price, 0);
+  const total = cart.reduce((acc, item) => acc + parseFloat(item.product.price || 0), 0);
 
   const handleCheckout = () => {
-    alert("Commande passée avec succès (Simulation API) !");
+    alert("Processus de caisse initié avec succès !");
     clearCart();
   };
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-32 pb-12 flex items-center justify-center">
-        <h1 className="text-2xl font-bold text-gray-400">Votre panier est vide.</h1>
+      <div className="min-h-screen bg-gray-950 pt-32 pb-12 flex items-center justify-center">
+        <h1 className="text-2xl font-bold text-gray-500 uppercase tracking-widest">Votre arsenal est vide.</h1>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold text-royal-green-900 mb-8">Votre Panier</h1>
-        <div className="bg-white rounded-3xl shadow-xl p-6 md:p-8 space-y-6">
-          {cart.map((item) => (
-            <div key={item.id} className="flex items-center justify-between border-b pb-6 last:border-0 last:pb-0">
-              <div className="flex items-center gap-6">
-                <img src={item.product.image_url} alt="Maillot" className="w-24 h-24 object-cover rounded-lg bg-gray-100" />
+    <div className="min-h-screen bg-gray-950 pt-32 pb-12 relative overflow-hidden">
+      <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-royal-green-900/10 blur-[100px] rounded-full pointer-events-none" />
+
+      <motion.div 
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-3xl font-extrabold text-white mb-8 uppercase tracking-widest">Opération <span className="text-royal-green-500 neon-text">Panier</span></h1>
+        
+        <div className="bg-gray-900 border border-gray-800 rounded-3xl shadow-2xl p-6 md:p-8 space-y-6">
+          {cart.map((item, index) => (
+            <motion.div 
+              key={item.id} 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex flex-col md:flex-row items-center justify-between border-b border-gray-800 pb-6 last:border-0 last:pb-0 gap-6"
+            >
+              <div className="flex items-center gap-6 w-full md:w-auto">
+                <img src={item.product.image_url} alt="Maillot" className="w-24 h-24 object-cover rounded-xl bg-gray-800 border border-gray-700" />
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">{item.product.name}</h3>
-                  <p className="text-royal-green-600 font-semibold">{item.product.price} €</p>
+                  <h3 className="text-xl font-bold text-white uppercase tracking-wider">{item.product.name}</h3>
+                  <p className="text-royal-green-500 font-semibold mt-1">{item.product.price} €</p>
                   {item.customization && (
-                    <div className="text-sm text-gray-500 mt-2 bg-gray-100 p-2 rounded-md">
-                      Flocage: {item.customization.name} - {item.customization.number} (Police: {item.customization.font})
+                    <div className="text-xs text-gray-400 mt-3 bg-gray-950 border border-gray-800 p-3 rounded-lg uppercase tracking-wider">
+                      Flocage: <span className="text-white font-bold">{item.customization.name}</span> - <span className="text-white font-bold">{item.customization.number}</span> 
+                      <span className="text-royal-green-500 mx-2">|</span> 
+                      Taille: <span className="text-white font-bold">{item.customization.size}</span> 
                     </div>
                   )}
                 </div>
               </div>
-              <button onClick={() => removeFromCart(item.id)} className="text-red-500 hover:text-red-700 bg-red-50 p-3 rounded-full hover:bg-red-100 smooth-transitions">
-                <Trash2 size={20} />
+              <button 
+                onClick={() => removeFromCart(item.id)} 
+                className="w-full md:w-auto text-red-500 hover:text-red-400 bg-red-950/30 border border-red-900 p-4 rounded-xl hover:bg-red-900/50 hover:border-red-700 transition-all flex items-center justify-center gap-2"
+              >
+                <Trash2 size={20} /> <span className="md:hidden uppercase text-sm font-bold tracking-widest">Retirer</span>
               </button>
-            </div>
+            </motion.div>
           ))}
 
-          <div className="pt-8 border-t mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-2xl font-bold">Total: <span className="text-royal-green-600">{total.toFixed(2)} €</span></div>
-            <button onClick={handleCheckout} className="w-full md:w-auto px-8 py-4 gradient-royal text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-royal-green-500/30 transform hover:-translate-y-1 transition">
-              Valider la commande
+          <div className="pt-8 border-t border-gray-800 mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-2xl font-bold text-white uppercase tracking-wider">Investissement Total: <span className="text-royal-green-500 neon-text">{total.toFixed(2)} €</span></div>
+            <button onClick={handleCheckout} className="w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest bg-gray-800 border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1">
+              Valider le Panier
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

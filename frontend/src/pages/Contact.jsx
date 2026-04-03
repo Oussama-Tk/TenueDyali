@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { MapPin, Phone, Mail, Send } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -11,7 +12,6 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Le backend attend {name, email, message}. On combine Subject et Message ici.
       const payload = {
         name: formData.name,
         email: formData.email,
@@ -19,94 +19,123 @@ export default function Contact() {
       };
       
       await axios.post('http://localhost:8000/api/contact', payload);
-      setStatus({ success: true, message: 'Votre message a été envoyé avec succès ! Nous vous répondrons très vite.' });
+      setStatus({ success: true, message: 'Transmission confirmée. L\'unité de commandement a reçu le message.' });
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
-      setStatus({ success: false, message: 'Désolé, une erreur est survenue lors de l\'envoi du message.' });
+      setStatus({ success: false, message: 'Erreur réseau. Échec de la transmission sécurisée.' });
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-950 pt-32 pb-20 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-royal-green-900/10 blur-[150px] rounded-full pointer-events-none" />
+
+      <motion.div 
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-royal-green-900 mb-6">Contactez-nous</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Une question sur une commande ? Besoin d'aide pour une personnalisation ? Notre équipe est là pour vous répondre du bout des doigts.
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 uppercase tracking-tight">Transmission <span className="text-royal-green-500 neon-text">Sécurisée</span></h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light">
+            Une anomalie tactique ? Un besoin d'équipement spécial ? Établissez la liaison.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Informations de contact (Mock) */}
-          <div className="lg:col-span-1 space-y-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Nos Coordonnées</h3>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <MapPin className="text-royal-green-600 w-6 h-6 mt-1 mr-4 flex-shrink-0" />
+          {/* Informations de contact */}
+          <motion.div 
+            className="lg:col-span-1 space-y-8"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl shadow-xl">
+              <h3 className="text-2xl font-bold text-white mb-8 uppercase tracking-wider">Antenne Relais</h3>
+              <div className="space-y-8">
+                <div className="flex items-start group relative">
+                  <div className="bg-gray-950 p-3 rounded-xl border border-gray-800 mr-5 group-hover:border-royal-green-500 transition-colors">
+                    <MapPin className="text-royal-green-500 w-6 h-6 group-hover:drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                  </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Adresse</h4>
-                    <p className="text-gray-600 mt-1">123 Avenue Mohammed V<br/>Casablanca, 20000<br/>Maroc</p>
+                    <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Base Opérationnelle</h4>
+                    <p className="text-gray-500 mt-1 font-light">123 Avenue Mohammed V<br/>Casablanca, 20000<br/>Maroc</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <Phone className="text-royal-green-600 w-6 h-6 mt-1 mr-4 flex-shrink-0" />
+                <div className="flex items-start group relative">
+                  <div className="bg-gray-950 p-3 rounded-xl border border-gray-800 mr-5 group-hover:border-royal-green-500 transition-colors">
+                    <Phone className="text-royal-green-500 w-6 h-6 group-hover:drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                  </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Téléphone</h4>
-                    <p className="text-gray-600 mt-1">+212 6 12 34 56 78</p>
+                    <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Fréquence Vocale</h4>
+                    <p className="text-gray-500 mt-1 font-light">+212 6 12 34 56 78</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <Mail className="text-royal-green-600 w-6 h-6 mt-1 mr-4 flex-shrink-0" />
+                <div className="flex items-start group relative">
+                  <div className="bg-gray-950 p-3 rounded-xl border border-gray-800 mr-5 group-hover:border-royal-green-500 transition-colors">
+                    <Mail className="text-royal-green-500 w-6 h-6 group-hover:drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                  </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Email</h4>
-                    <p className="text-gray-600 mt-1">contact@tenuedyali.com</p>
+                    <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Canal Digital</h4>
+                    <p className="text-gray-500 mt-1 font-light">contact@tenuedyali.com</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Formulaire */}
-          <div className="lg:col-span-2">
-            <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">Envoyez-nous un message</h3>
+          <motion.div 
+            className="lg:col-span-2"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            <div className="bg-gray-900 border border-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+              {/* Decorative Corner Glow */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-royal-green-500/10 blur-3xl rounded-full" />
+
+              <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-wider">Formulaire de Liaison</h3>
+              <p className="text-gray-500 mb-8 font-light">Insérez les données requises pour initialiser le transfert.</p>
               
               {status.message && (
-                <div className={`p-4 rounded-xl mb-6 font-bold ${status.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <div className={`p-4 rounded-xl mb-8 font-bold border ${status.success ? 'bg-green-900/30 text-green-400 border-green-800' : 'bg-red-900/30 text-red-400 border-red-800'} backdrop-blur-sm`}>
                   {status.message}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nom Complet</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full p-3 border border-gray-300 rounded-xl focus:ring-royal-green-500 outline-none" />
+                    <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Identifiant</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.3)] outline-none transition-all placeholder-gray-600" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full p-3 border border-gray-300 rounded-xl focus:ring-royal-green-500 outline-none" />
+                    <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Adresse Sécurisée (Email)</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.3)] outline-none transition-all placeholder-gray-600" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Sujet</label>
-                  <input type="text" name="subject" value={formData.subject} onChange={handleChange} required className="w-full p-3 border border-gray-300 rounded-xl focus:ring-royal-green-500 outline-none" />
+                  <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Objet Tactique</label>
+                  <input type="text" name="subject" value={formData.subject} onChange={handleChange} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.3)] outline-none transition-all placeholder-gray-600" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                  <textarea name="message" rows="5" value={formData.message} onChange={handleChange} required className="w-full p-3 border border-gray-300 rounded-xl focus:ring-royal-green-500 outline-none"></textarea>
+                  <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Rapport</label>
+                  <textarea name="message" rows="5" value={formData.message} onChange={handleChange} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.3)] outline-none transition-all placeholder-gray-600"></textarea>
                 </div>
-                <button type="submit" className="w-full md:w-auto px-8 py-4 gradient-royal text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-royal-green-500/30 transform hover:-translate-y-1 transition flex items-center justify-center">
-                  <Send className="mr-2 w-5 h-5" />
-                  Envoyer le message
+                <button type="submit" className="w-full py-5 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center bg-gray-800 border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1 mt-4">
+                  <div className="flex items-center justify-center">
+                    <Send className="mr-3 w-5 h-5" />
+                    Transmettre le paquet
+                  </div>
                 </button>
               </form>
             </div>
-          </div>
+          </motion.div>
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

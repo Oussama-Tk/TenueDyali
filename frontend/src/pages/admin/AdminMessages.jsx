@@ -17,16 +17,16 @@ export default function AdminMessages() {
   }, []);
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Messages Reçus</h2>
+    <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl shadow-xl">
+      <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider">Transmissions Interceptées</h2>
       <div className="space-y-4">
-        {messages.length === 0 ? <p className="text-gray-500">Aucun message.</p> : messages.map(msg => (
-          <div key={msg.id} className="border rounded-xl p-5 hover:bg-gray-50 transition">
-            <div className="flex justify-between mb-2">
-              <h3 className="font-bold">{msg.name} <span className="text-gray-500 text-sm font-normal">({msg.email})</span></h3>
-              <span className="text-xs text-gray-400">{new Date(msg.created_at).toLocaleDateString()}</span>
+        {messages.length === 0 ? <p className="text-gray-500 font-light italic">Aucun signal reçu.</p> : messages.map(msg => (
+          <div key={msg.id} className="border border-gray-800 bg-gray-950 rounded-2xl p-6 hover:border-royal-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.1)] transition-all">
+            <div className="flex flex-col md:flex-row justify-between mb-4 border-b border-gray-800 pb-3">
+              <h3 className="font-bold text-white tracking-wide uppercase">{msg.name} <span className="text-royal-green-500 text-sm font-normal lowercase tracking-normal ml-2">&lt;{msg.email}&gt;</span></h3>
+              <span className="text-xs text-gray-500 font-bold tracking-widest mt-2 md:mt-0">{new Date(msg.created_at).toLocaleString()}</span>
             </div>
-            <p className="text-gray-700 whitespace-pre-wrap">{msg.message}</p>
+            <p className="text-gray-300 whitespace-pre-wrap font-light leading-relaxed">{msg.message}</p>
           </div>
         ))}
       </div>

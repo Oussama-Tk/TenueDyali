@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,29 +13,63 @@ export default function Shop() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-extrabold text-royal-green-900 mb-8">Boutique Officielle</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((p) => (
-            <Link key={p.id} to={`/shop/${p.id}`} className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-2xl smooth-transitions transform hover:-translate-y-2 group">
-              <div className="bg-gray-100 rounded-xl mb-4 overflow-hidden h-64 flex items-center justify-center relative">
-                <img 
-                  src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`} 
-                  alt={p.name} 
-                  className={`h-full w-full object-cover group-hover:scale-110 smooth-transitions ${p.is_available === 0 ? 'grayscale opacity-50' : ''}`} 
-                />
-                {!p.is_available && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-                    <span className="bg-red-600 text-white font-bold px-4 py-2 rounded-lg rotate-12 drop-shadow-xl text-lg">ÉPUISÉ</span>
-                  </div>
-                )}
-              </div>
-              <h2 className="text-xl font-bold text-gray-900">{p.name}</h2>
-              <p className="text-lg font-semibold text-royal-green-600 mt-2">{p.price} €</p>
-            </Link>
+    <div className="min-h-screen bg-gray-950 flex flex-col pt-24 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight uppercase">Notre <span className="text-royal-green-500 neon-text">Arsenal</span></h1>
+          <p className="text-xl text-gray-400 mt-4 font-light max-w-2xl mx-auto">
+            Équipez-vous avec style. Personnalisation millimétrée, tissu haut de gamme.
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, staggerChildren: 0.15 }}
+        >
+          {products.map((p, idx) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+            >
+              <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 shadow-md smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
+                <div className="bg-gray-800/40 rounded-xl mb-5 overflow-hidden h-72 flex items-center justify-center relative">
+                  <img 
+                    src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`} 
+                    alt={p.name} 
+                    className={`h-full w-full object-cover group-hover:scale-110 smooth-transitions ${p.is_available === 0 ? 'grayscale opacity-40' : ''}`} 
+                  />
+                  {!p.is_available && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                      <span className="bg-red-600/90 text-white font-black tracking-widest uppercase px-6 py-3 rounded-lg rotate-12 shadow-[0_0_15px_rgba(220,38,38,0.6)] text-xl border border-red-500">ÉPUISÉ</span>
+                    </div>
+                  )}
+                  {p.is_available && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
+                  )}
+                </div>
+                <div className="relative z-10 px-2 pb-2">
+                  <h2 className="text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors uppercase tracking-wide">{p.name}</h2>
+                  <p className="text-xl font-semibold text-royal-green-500 mt-2 tracking-widest">{p.price} €</p>
+                </div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
+        
+        {products.length === 0 && (
+          <div className="text-center py-20 text-gray-500 text-xl font-light">
+            Chargement de l'arsenal...
+          </div>
+        )}
       </div>
     </div>
   );

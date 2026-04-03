@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-royal-green-50: #f0fdf4;
+  --color-royal-green-100: #dcfce7;
+  --color-royal-green-500: #22c55e;
+  --color-royal-green-700: #15803d;
+  --color-royal-green-900: #1b4332; /* The exact Royal Green */
+  --color-royal-gold: #fbbf24;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+@layer utilities {
+  .smooth-transitions {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  .gradient-royal {
+    @apply bg-gradient-to-r from-royal-green-900 via-royal-green-700 to-royal-green-500;
+  }
+}

@@ -92,7 +92,7 @@ export default function AdminProducts() {
               <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Investissement (€)</label>
+              <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Investissement (MAD)</label>
               <input type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required className="w-full p-4 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 outline-none transition-all" />
             </div>
             <div>
@@ -173,7 +173,7 @@ export default function AdminProducts() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-bold text-white uppercase tracking-wider">{p.name}</div>
-                    <div className="text-royal-green-500 font-medium text-sm mt-1">{p.price} €</div>
+                    <div className="text-royal-green-500 font-medium text-sm mt-1">{p.price} MAD</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {p.is_available ? (

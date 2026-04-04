@@ -17,7 +17,7 @@ export default function Contact() {
         email: formData.email,
         message: `Sujet: ${formData.subject}\n\n${formData.message}`
       };
-      
+
       await axios.post('http://localhost:8000/api/contact', payload);
       setStatus({ success: true, message: 'Transmission confirmée. L\'unité de commandement a reçu le message.' });
       setFormData({ name: '', email: '', subject: '', message: '' });
@@ -30,7 +30,7 @@ export default function Contact() {
     <div className="min-h-screen bg-gray-950 pt-32 pb-20 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-royal-green-900/10 blur-[150px] rounded-full pointer-events-none" />
 
-      <motion.div 
+      <motion.div
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Informations de contact */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-1 space-y-8"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -60,7 +60,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Base Opérationnelle</h4>
-                    <p className="text-gray-500 mt-1 font-light">123 Avenue Mohammed V<br/>Casablanca, 20000<br/>Maroc</p>
+                    <p className="text-gray-500 mt-1 font-light">Av. des Marguerites<br />Tangier, 90000<br />Maroc</p>
                   </div>
                 </div>
                 <div className="flex items-start group relative">
@@ -69,7 +69,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Fréquence Vocale</h4>
-                    <p className="text-gray-500 mt-1 font-light">+212 6 12 34 56 78</p>
+                    <p className="text-gray-500 mt-1 font-light">+212 6 67 98 58 87</p>
                   </div>
                 </div>
                 <div className="flex items-start group relative">
@@ -78,7 +78,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-300 uppercase text-sm tracking-wider">Canal Digital</h4>
-                    <p className="text-gray-500 mt-1 font-light">contact@tenuedyali.com</p>
+                    <p className="text-gray-500 mt-1 font-light">tenuedyali@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default function Contact() {
           </motion.div>
 
           {/* Formulaire */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-2"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -98,7 +98,7 @@ export default function Contact() {
 
               <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-wider">Formulaire de Liaison</h3>
               <p className="text-gray-500 mb-8 font-light">Insérez les données requises pour initialiser le transfert.</p>
-              
+
               {status.message && (
                 <div className={`p-4 rounded-xl mb-8 font-bold border ${status.success ? 'bg-green-900/30 text-green-400 border-green-800' : 'bg-red-900/30 text-red-400 border-red-800'} backdrop-blur-sm`}>
                   {status.message}

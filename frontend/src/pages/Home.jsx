@@ -91,7 +91,7 @@ export default function Home() {
                     </div>
                     <div className="relative z-10">
                       <h3 className="text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors">{p.name}</h3>
-                      <p className="text-xl font-semibold text-royal-green-500 mt-2">{p.price} €</p>
+                      <p className="text-xl font-semibold text-royal-green-500 mt-2">{p.price} MAD</p>
                     </div>
                   </Link>
                 </motion.div>

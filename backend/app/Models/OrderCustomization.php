@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderCustomization extends Model
 {
-    protected $fillable = ['order_id', 'product_id', 'name_flocage', 'number_flocage', 'size', 'font', 'color', 'pos_x', 'pos_y'];
+    protected $fillable = ['order_id', 'product_id', 'name_flocage', 'number_flocage', 'size', 'font', 'color', 'pos_x', 'pos_y', 'preview_image'];
 
     public function order()
     {

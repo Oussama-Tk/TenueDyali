@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import * as htmlToImage from 'html-to-image';
 import { Rnd } from 'react-rnd';
 import { useCartStore } from '../store/useCartStore';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,6 +11,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const previewRef = useRef(null);
+  const [isCapturing, setIsCapturing] = useState(false);
   const [name, setName] = useState('VOTRE NOM');
   const [number, setNumber] = useState('10');
   const [font, setFont] = useState('Arial');
@@ -23,12 +26,27 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
   const [namePos, setNamePos] = useState({ x: 100, y: 150 });
   const [numPos, setNumPos] = useState({ x: 120, y: 220 });
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!user) {
       onClose();
       navigate('/login');
       return;
     }
+
+    setIsCapturing(true);
+    let previewBase64 = null;
+    try {
+      if (previewRef.current) {
+        previewBase64 = await htmlToImage.toPng(previewRef.current, { 
+          pixelRatio: 2,
+          quality: 1
+        });
+      }
+    } catch (error) {
+      alert("Erreur de capture photo : " + error.message);
+      console.error("Erreur capture", error);
+    }
+    setIsCapturing(false);
 
     const customization = {
       name,
@@ -37,7 +55,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
       color,
       size: choiceSize,
       pos_x: namePos.x,
-      pos_y: namePos.y
+      pos_y: namePos.y,
+      preview_image_base64: previewBase64
     };
     addToCart(product, customization);
     onClose();
@@ -69,10 +88,9 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
 
             {/* Zone de prévisualisation (Drag & Drop) */}
             <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r">
-              <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-              <div className="relative w-[300px] h-[400px]">
+              <div ref={previewRef} className="relative w-[300px] h-[400px]">
                 <img 
-                  src={product.custom_image_url ? (product.custom_image_url.startsWith('http') ? product.custom_image_url : `http://localhost:8000${product.custom_image_url}`) : (product.image_url?.startsWith('http') ? product.image_url : `http://localhost:8000${product.image_url}`)} 
+                  src={product.custom_image_url ? product.custom_image_url : product.image_url} 
                   alt={product.name} 
                   className="w-full h-full object-contain pointer-events-none drop-shadow-2xl" 
                 />
@@ -162,9 +180,14 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
 
               <button 
                 onClick={handleAddToCart}
-                className="mt-8 w-full py-4 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center bg-gray-800 border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1"
+                disabled={isCapturing}
+                className={`mt-8 w-full py-4 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center border ${
+                  isCapturing 
+                  ? 'bg-gray-700 border-gray-600 cursor-wait' 
+                  : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                }`}
               >
-                Intégrer au Panier
+                {isCapturing ? 'Capture...' : 'Intégrer au Panier'}
               </button>
             </div>
           </motion.div>

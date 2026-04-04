@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu } from 'lucide-react';
+import { ShoppingCart, Menu, LogOut } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function Navbar() {
-  const { cart } = useCartStore();
+  const { cart, clearCart } = useCartStore();
   const { user, logout } = useAuthStore();
 
   return (
@@ -32,7 +32,9 @@ export default function Navbar() {
             {user ? (
               <div className="hidden md:flex items-center gap-4">
                 <span className="text-royal-green-500 font-bold text-xs uppercase tracking-widest">{user.username}</span>
-                <button onClick={logout} className="text-gray-400 text-sm font-semibold hover:text-red-500 transition-colors duration-300">Déconnexion</button>
+                <button onClick={() => { clearCart(); logout(); }} className="flex items-center gap-2 text-gray-400 text-sm font-semibold hover:text-red-500 transition-colors duration-300">
+                  Déconnexion <LogOut size={16} />
+                </button>
               </div>
             ) : (
               <Link to="/login" className="hidden md:block text-gray-300 font-semibold hover:text-royal-green-500 transition-colors duration-300">Connexion</Link>

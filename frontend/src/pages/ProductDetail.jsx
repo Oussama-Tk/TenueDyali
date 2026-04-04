@@ -53,7 +53,7 @@ export default function ProductDetail() {
             </div>
           
             <h1 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tight">{product.name}</h1>
-            <p className="text-3xl font-extrabold text-royal-green-500 mb-8 neon-text">{product.price} €</p>
+            <p className="text-3xl font-extrabold text-royal-green-500 mb-8 neon-text">{product.price} MAD</p>
             
             <div className="w-12 h-1 bg-royal-green-500 mb-8 rounded-full" />
             

@@ -58,7 +58,7 @@ export default function Shop() {
                 </div>
                 <div className="relative z-10 px-2 pb-2">
                   <h2 className="text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors uppercase tracking-wide">{p.name}</h2>
-                  <p className="text-xl font-semibold text-royal-green-500 mt-2 tracking-widest">{p.price} €</p>
+                  <p className="text-xl font-semibold text-royal-green-500 mt-2 tracking-widest">{p.price} MAD</p>
                 </div>
               </Link>
             </motion.div>

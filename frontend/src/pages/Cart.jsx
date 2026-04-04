@@ -1,15 +1,52 @@
 import { useCartStore } from '../store/useCartStore';
 import { Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import axios from 'axios';
+import { useAuthStore } from '../store/useAuthStore';
 
 export default function Cart() {
   const { cart, removeFromCart, clearCart } = useCartStore();
+  const { user, token } = useAuthStore();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const total = cart.reduce((acc, item) => acc + parseFloat(item.product.price || 0), 0);
 
-  const handleCheckout = () => {
-    alert("Processus de caisse initié avec succès !");
-    clearCart();
+  const handleCheckout = async () => {
+    try {
+      setIsCheckingOut(true);
+      
+      const payload = {
+        total_amount: total,
+        items: cart.map(item => ({
+          product_id: item.product.id,
+          customization: item.customization || null
+        }))
+      };
+
+      await axios.post('http://localhost:8000/api/orders', payload, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      alert("Processus de caisse initié avec succès ! Commande enregistrée.");
+      clearCart();
+    } catch (err) {
+      console.error(err);
+      let errorMsg = "Erreur lors de la validation du panier.";
+      if (err.response && err.response.data) {
+        if (err.response.data.message) {
+           errorMsg += "\n" + err.response.data.message;
+        }
+        if (err.response.data.error) {
+           errorMsg += "\n" + err.response.data.error;
+        }
+      }
+      alert(errorMsg);
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
   if (cart.length === 0) {
@@ -42,10 +79,16 @@ export default function Cart() {
               className="flex flex-col md:flex-row items-center justify-between border-b border-gray-800 pb-6 last:border-0 last:pb-0 gap-6"
             >
               <div className="flex items-center gap-6 w-full md:w-auto">
-                <img src={item.product.image_url} alt="Maillot" className="w-24 h-24 object-cover rounded-xl bg-gray-800 border border-gray-700" />
+                <div className="relative w-24 h-24 bg-gray-800 border border-gray-700 rounded-xl overflow-hidden flex-shrink-0">
+                  {item.customization?.preview_image_base64 ? (
+                    <img src={item.customization.preview_image_base64} alt="Maillot Customisé" className="w-full h-full object-contain bg-gray-300" />
+                  ) : (
+                    <img src={item.product.image_url?.startsWith('http') ? item.product.image_url : `http://localhost:8000${item.product.image_url}`} alt="Maillot" className="w-full h-full object-cover" />
+                  )}
+                </div>
                 <div>
                   <h3 className="text-xl font-bold text-white uppercase tracking-wider">{item.product.name}</h3>
-                  <p className="text-royal-green-500 font-semibold mt-1">{item.product.price} €</p>
+                  <p className="text-royal-green-500 font-semibold mt-1">{item.product.price} MAD</p>
                   {item.customization && (
                     <div className="text-xs text-gray-400 mt-3 bg-gray-950 border border-gray-800 p-3 rounded-lg uppercase tracking-wider">
                       Flocage: <span className="text-white font-bold">{item.customization.name}</span> - <span className="text-white font-bold">{item.customization.number}</span> 
@@ -65,9 +108,17 @@ export default function Cart() {
           ))}
 
           <div className="pt-8 border-t border-gray-800 mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-2xl font-bold text-white uppercase tracking-wider">Investissement Total: <span className="text-royal-green-500 neon-text">{total.toFixed(2)} €</span></div>
-            <button onClick={handleCheckout} className="w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest bg-gray-800 border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1">
-              Valider le Panier
+            <div className="text-2xl font-bold text-white uppercase tracking-wider">Investissement Total: <span className="text-royal-green-500 neon-text">{total.toFixed(2)} MAD</span></div>
+            <button 
+              onClick={handleCheckout} 
+              disabled={isCheckingOut}
+              className={`w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest border ${
+                isCheckingOut 
+                ? 'bg-gray-700 border-gray-600 cursor-wait' 
+                : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+              }`}
+            >
+              {isCheckingOut ? 'Validation...' : 'Valider le Panier'}
             </button>
           </div>
         </div>

@@ -33,5 +33,6 @@ Route::middleware(['auth:sanctum', App\Http\Middleware\IsAdmin::class])->group(f
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
     
     Route::get('/admin/orders', [AdminController::class, 'orders']);
+    Route::delete('/admin/orders/{id}', [AdminController::class, 'deleteOrder']);
     Route::get('/admin/messages', [AdminController::class, 'messages']);
 });

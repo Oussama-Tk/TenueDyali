@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderCustomization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -28,6 +29,23 @@ class OrderController extends Controller
             foreach ($request->items as $item) {
                 if (isset($item['customization'])) {
                     $customization = $item['customization'];
+                    
+                    $previewImagePath = null;
+                    if (isset($customization['preview_image_base64'])) {
+                        $base64 = $customization['preview_image_base64'];
+                        
+                        // Parse the base64 string
+                        if (strpos($base64, ';base64,') !== false) {
+                            list($type, $base64) = explode(';', $base64);
+                            list(, $base64)      = explode(',', $base64);
+                        }
+                        
+                        $imageContent = base64_decode($base64);
+                        $filename = 'previews/' . uniqid() . '_' . time() . '.png';
+                        Storage::disk('public')->put($filename, $imageContent);
+                        $previewImagePath = '/storage/' . $filename;
+                    }
+
                     OrderCustomization::create([
                         'order_id' => $order->id,
                         'product_id' => $item['product_id'],
@@ -38,6 +56,7 @@ class OrderController extends Controller
                         'color' => $customization['color'] ?? null,
                         'pos_x' => $customization['pos_x'] ?? 0,
                         'pos_y' => $customization['pos_y'] ?? 0,
+                        'preview_image' => $previewImagePath,
                     ]);
                 }
             }

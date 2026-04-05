@@ -8,7 +8,7 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/products')
+    axios.get('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products')
       .then(res => {
         const available = res.data.filter(p => (p.is_available === 1 || p.is_available === true));
         setFeaturedProducts(available.slice(0, 3));
@@ -24,16 +24,16 @@ export default function Home() {
           {/* Image de fond avec overlay ultra sombre */}
           <div className="absolute inset-0 bg-[url('/hero-bg.jpeg')] bg-cover bg-center bg-no-repeat" />
           <div className="absolute inset-0 bg-gray-950/80 backdrop-blur-[2px]" />
-          
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-40 flex flex-col items-center text-center relative z-10">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-8 max-w-4xl"
             >
               <h1 className="text-5xl md:text-8xl font-extrabold text-white tracking-tight leading-tight">
-                L'ÉLITE DU <br/>
+                L'ÉLITE DU <br />
                 <span className="text-transparent bg-clip-text gradient-royal neon-text">MAILLOT SUR MESURE</span>
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
@@ -54,7 +54,7 @@ export default function Home() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-royal-green-900/20 blur-[120px] rounded-full pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div 
+            <motion.div
               className="text-center mb-20"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -65,7 +65,7 @@ export default function Home() {
               <p className="text-lg text-gray-400 mt-4">Les pièces maîtres de notre arsenal.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -82,10 +82,10 @@ export default function Home() {
                 >
                   <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
                     <div className="bg-gray-800/50 rounded-xl mb-6 overflow-hidden h-72 flex items-center justify-center relative">
-                      <img 
-                        src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`} 
-                        alt={p.name} 
-                        className="h-full w-full object-cover group-hover:scale-110 smooth-transitions" 
+                      <img
+                        src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`}
+                        alt={p.name}
+                        className="h-full w-full object-cover group-hover:scale-110 smooth-transitions"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
                     </div>
@@ -98,7 +98,7 @@ export default function Home() {
               ))}
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="mt-20 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export default function Home() {
           <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-royal-green-900/10 blur-[120px] rounded-full pointer-events-none transform -translate-y-1/2" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -150,15 +150,15 @@ export default function Home() {
         {/* Testimonials Section */}
         <section className="py-24 bg-gray-900 border-t border-gray-800 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               className="text-center mb-16"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-               <h2 className="text-4xl font-extrabold text-white uppercase tracking-wider">Retours <span className="text-royal-green-500 neon-text">Déploiement</span></h2>
-               <p className="text-gray-400 mt-4 font-light text-lg">L'analyse de ceux qui opèrent sur le terrain.</p>
+              <h2 className="text-4xl font-extrabold text-white uppercase tracking-wider">Retours <span className="text-royal-green-500 neon-text">Déploiement</span></h2>
+              <p className="text-gray-400 mt-4 font-light text-lg">L'analyse de ceux qui opèrent sur le terrain.</p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -167,7 +167,7 @@ export default function Home() {
                 { name: "S.K", text: "La qualité du tissu est largement au-dessus de mes attentes. Le Vert Royal claque !", rating: 5 },
                 { name: "Client Anonyme", text: "Livraison ultra rapide et la taille (XL) est exactement comme prévu. Je recommande fortement l'arsenal.", rating: 4 }
               ].map((feedback, idx) => (
-                <motion.div 
+                <motion.div
                   key={idx}
                   className="bg-gray-950 border border-gray-800 p-8 rounded-2xl relative hover:border-royal-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.15)] transition-all flex flex-col"
                   initial={{ opacity: 0, scale: 0.95 }}

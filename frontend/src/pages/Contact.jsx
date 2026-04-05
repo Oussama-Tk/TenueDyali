@@ -18,7 +18,7 @@ export default function Contact() {
         message: `Sujet: ${formData.subject}\n\n${formData.message}`
       };
 
-      await axios.post('http://localhost:8000/api/contact', payload);
+      await axios.post('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/contact', payload);
       setStatus({ success: true, message: 'Transmission confirmée. L\'unité de commandement a reçu le message.' });
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {

@@ -15,7 +15,7 @@ export default function Cart() {
   const handleCheckout = async () => {
     try {
       setIsCheckingOut(true);
-      
+
       const payload = {
         total_amount: total,
         items: cart.map(item => ({
@@ -24,12 +24,12 @@ export default function Cart() {
         }))
       };
 
-      await axios.post('http://localhost:8000/api/orders', payload, {
+      await axios.post('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/orders', payload, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       alert("Processus de caisse initié avec succès ! Commande enregistrée.");
       clearCart();
     } catch (err) {
@@ -37,10 +37,10 @@ export default function Cart() {
       let errorMsg = "Erreur lors de la validation du panier.";
       if (err.response && err.response.data) {
         if (err.response.data.message) {
-           errorMsg += "\n" + err.response.data.message;
+          errorMsg += "\n" + err.response.data.message;
         }
         if (err.response.data.error) {
-           errorMsg += "\n" + err.response.data.error;
+          errorMsg += "\n" + err.response.data.error;
         }
       }
       alert(errorMsg);
@@ -61,18 +61,18 @@ export default function Cart() {
     <div className="min-h-screen bg-gray-950 pt-32 pb-12 relative overflow-hidden">
       <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-royal-green-900/10 blur-[100px] rounded-full pointer-events-none" />
 
-      <motion.div 
+      <motion.div
         className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-3xl font-extrabold text-white mb-8 uppercase tracking-widest">Opération <span className="text-royal-green-500 neon-text">Panier</span></h1>
-        
+
         <div className="bg-gray-900 border border-gray-800 rounded-3xl shadow-2xl p-6 md:p-8 space-y-6">
           {cart.map((item, index) => (
-            <motion.div 
-              key={item.id} 
+            <motion.div
+              key={item.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -91,15 +91,15 @@ export default function Cart() {
                   <p className="text-royal-green-500 font-semibold mt-1">{item.product.price} MAD</p>
                   {item.customization && (
                     <div className="text-xs text-gray-400 mt-3 bg-gray-950 border border-gray-800 p-3 rounded-lg uppercase tracking-wider">
-                      Flocage: <span className="text-white font-bold">{item.customization.name}</span> - <span className="text-white font-bold">{item.customization.number}</span> 
-                      <span className="text-royal-green-500 mx-2">|</span> 
-                      Taille: <span className="text-white font-bold">{item.customization.size}</span> 
+                      Flocage: <span className="text-white font-bold">{item.customization.name}</span> - <span className="text-white font-bold">{item.customization.number}</span>
+                      <span className="text-royal-green-500 mx-2">|</span>
+                      Taille: <span className="text-white font-bold">{item.customization.size}</span>
                     </div>
                   )}
                 </div>
               </div>
-              <button 
-                onClick={() => removeFromCart(item.id)} 
+              <button
+                onClick={() => removeFromCart(item.id)}
                 className="w-full md:w-auto text-red-500 hover:text-red-400 bg-red-950/30 border border-red-900 p-4 rounded-xl hover:bg-red-900/50 hover:border-red-700 transition-all flex items-center justify-center gap-2"
               >
                 <Trash2 size={20} /> <span className="md:hidden uppercase text-sm font-bold tracking-widest">Retirer</span>
@@ -109,14 +109,13 @@ export default function Cart() {
 
           <div className="pt-8 border-t border-gray-800 mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-2xl font-bold text-white uppercase tracking-wider">Investissement Total: <span className="text-royal-green-500 neon-text">{total.toFixed(2)} MAD</span></div>
-            <button 
-              onClick={handleCheckout} 
+            <button
+              onClick={handleCheckout}
               disabled={isCheckingOut}
-              className={`w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest border ${
-                isCheckingOut 
-                ? 'bg-gray-700 border-gray-600 cursor-wait' 
-                : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
-              }`}
+              className={`w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest border ${isCheckingOut
+                  ? 'bg-gray-700 border-gray-600 cursor-wait'
+                  : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                }`}
             >
               {isCheckingOut ? 'Validation...' : 'Valider le Panier'}
             </button>

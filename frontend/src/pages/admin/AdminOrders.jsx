@@ -7,7 +7,7 @@ export default function AdminOrders() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/admin/orders');
+        const res = await axios.get('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/admin/orders');
         setOrders(res.data);
       } catch (err) {
         console.error(err);
@@ -30,11 +30,11 @@ export default function AdminOrders() {
               <div className="text-left md:text-right mt-4 md:mt-0 flex flex-col items-end">
                 <span className="font-black text-royal-green-500 text-2xl drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]">{order.total_amount} MAD</span>
                 <span className="block text-xs text-gray-400 uppercase tracking-widest mt-1 mb-3">Statut: <span className="text-white font-bold">{order.status}</span></span>
-                <button 
+                <button
                   onClick={async () => {
                     if (window.confirm('Voulez-vous vraiment supprimer cette commande ?')) {
                       try {
-                        await axios.delete(`http://localhost:8000/api/admin/orders/${order.id}`);
+                        await axios.delete(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/admin/orders/${order.id}`);
                         setOrders(orders.filter(o => o.id !== order.id));
                       } catch (err) {
                         alert('Erreur lors de la suppression.');
@@ -47,7 +47,7 @@ export default function AdminOrders() {
                 </button>
               </div>
             </div>
-            
+
             <div className="bg-gray-900 border border-gray-800 p-5 rounded-xl">
               <h4 className="font-bold mb-4 text-xs text-gray-400 uppercase tracking-widest">Détails de Personnalisation</h4>
               {order.customizations && order.customizations.map(cust => (

@@ -7,7 +7,7 @@ export default function Shop() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/products')
+    axios.get('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products')
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -15,7 +15,7 @@ export default function Shop() {
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ export default function Shop() {
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -42,10 +42,10 @@ export default function Shop() {
             >
               <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 shadow-md smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
                 <div className="bg-gray-800/40 rounded-xl mb-5 overflow-hidden h-72 flex items-center justify-center relative">
-                  <img 
-                    src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`} 
-                    alt={p.name} 
-                    className={`h-full w-full object-cover group-hover:scale-110 smooth-transitions ${p.is_available === 0 ? 'grayscale opacity-40' : ''}`} 
+                  <img
+                    src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`}
+                    alt={p.name}
+                    className={`h-full w-full object-cover group-hover:scale-110 smooth-transitions ${p.is_available === 0 ? 'grayscale opacity-40' : ''}`}
                   />
                   {!p.is_available && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -64,7 +64,7 @@ export default function Shop() {
             </motion.div>
           ))}
         </motion.div>
-        
+
         {products.length === 0 && (
           <div className="text-center py-20 text-gray-500 text-xl font-light">
             Chargement de l'arsenal...

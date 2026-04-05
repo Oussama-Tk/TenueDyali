@@ -15,7 +15,7 @@ export default function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/products');
+      const res = await axios.get('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products');
       setProducts(res.data);
     } catch (err) {
       console.error(err);
@@ -49,17 +49,17 @@ export default function AdminProducts() {
     try {
       if (editingId) {
         formData.append('_method', 'PUT');
-        await axios.post(`http://localhost:8000/api/products/${editingId}`, formData, {
+        await axios.post(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products/${editingId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         alert('Produit modifié !');
       } else {
-        await axios.post('http://localhost:8000/api/products', formData, {
+        await axios.post('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         alert('Produit ajouté !');
       }
-      
+
       setEditingId(null);
       setName(''); setPrice(''); setDescription(''); setImage(null); setCustomImage(null); setIsAvailable(true);
       fetchProducts();
@@ -71,7 +71,7 @@ export default function AdminProducts() {
   const handleDelete = async (id) => {
     if (window.confirm('Confirmer la suppression de cette pièce ?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/products/${id}`);
+        await axios.delete(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products/${id}`);
         fetchProducts();
       } catch (err) {
         alert('Erreur lors de la suppression');
@@ -106,7 +106,7 @@ export default function AdminProducts() {
               </label>
             </div>
           </div>
-          
+
           <div className="space-y-6 flex flex-col justify-between">
             <div className="grid grid-cols-2 gap-6">
               <div>
@@ -124,7 +124,7 @@ export default function AdminProducts() {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Dos (Custom)</label>
                 <div className="mt-1 flex justify-center px-4 pt-5 pb-5 bg-gray-950 border-2 border-gray-800 border-dashed rounded-xl hover:border-blue-500 transition-colors cursor-pointer group">
@@ -141,7 +141,7 @@ export default function AdminProducts() {
                 </div>
               </div>
             </div>
-            
+
             <button type="submit" className="w-full py-5 bg-gray-800 border border-gray-700 text-white rounded-xl font-bold uppercase tracking-widest shadow-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:border-royal-green-500 hover:-translate-y-1 transition-all mt-auto">
               Confirmer l'opération
             </button>
@@ -177,9 +177,9 @@ export default function AdminProducts() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {p.is_available ? (
-                      <span className="inline-flex items-center bg-green-900/30 text-green-400 border border-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><CheckCircle size={14} className="mr-1.5"/> Disp.</span>
+                      <span className="inline-flex items-center bg-green-900/30 text-green-400 border border-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><CheckCircle size={14} className="mr-1.5" /> Disp.</span>
                     ) : (
-                      <span className="inline-flex items-center bg-red-900/30 text-red-400 border border-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><XCircle size={14} className="mr-1.5"/> H.S.</span>
+                      <span className="inline-flex items-center bg-red-900/30 text-red-400 border border-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><XCircle size={14} className="mr-1.5" /> H.S.</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right space-x-3">

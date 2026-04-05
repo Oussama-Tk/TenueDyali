@@ -7,7 +7,7 @@ export default function AdminMessages() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/admin/messages');
+        const res = await axios.get('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/admin/messages');
         setMessages(res.data);
       } catch (err) {
         console.error(err);

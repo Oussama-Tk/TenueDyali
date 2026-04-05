@@ -43,7 +43,7 @@ export default function Shop() {
               <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 shadow-md smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
                 <div className="bg-gray-800/40 rounded-xl mb-5 overflow-hidden h-72 flex items-center justify-center relative">
                   <img
-                    src={p.image_url ? p.image_url.replace('http://localhost:8000', 'https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net') : ''}
+                    src={p.image_url ? `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.image_url}` : ''}
                     alt={p.name}
                     className={`h-full w-full object-cover group-hover:scale-110 smooth-transitions ${p.is_available === 0 ? 'grayscale opacity-40' : ''}`}
                   />

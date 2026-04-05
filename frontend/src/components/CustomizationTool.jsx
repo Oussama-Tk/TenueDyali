@@ -18,7 +18,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
   const [font, setFont] = useState('Arial');
   const [color, setColor] = useState('#ffffff');
   const [choiceSize, setChoiceSize] = useState('L');
-  
+
   const [nameSize, setNameSize] = useState(24);
   const [numberSize, setNumberSize] = useState(60);
 
@@ -37,7 +37,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     let previewBase64 = null;
     try {
       if (previewRef.current) {
-        previewBase64 = await htmlToImage.toPng(previewRef.current, { 
+        previewBase64 = await htmlToImage.toPng(previewRef.current, {
           pixelRatio: 2,
           quality: 1
         });
@@ -67,7 +67,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -75,7 +75,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
             className="absolute inset-0 bg-gray-950/80 backdrop-blur-md"
             onClick={onClose}
           />
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
@@ -89,12 +89,13 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
             {/* Zone de prévisualisation (Drag & Drop) */}
             <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r">
               <div ref={previewRef} className="relative w-[300px] h-[400px]">
-                <img 
-                  src={product.custom_image_url ? product.custom_image_url : product.image_url} 
-                  alt={product.name} 
-                  className="w-full h-full object-contain pointer-events-none drop-shadow-2xl" 
+                <img
+                  src={product.custom_image_url ? `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.custom_image_url}` : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.image_url}`}
+                  alt={product.name}
+                  className="w-full h-full object-contain pointer-events-none drop-shadow-2xl"
                 />
-                
+
+
                 <Rnd
                   size={{ width: 'auto', height: 'auto' }}
                   position={{ x: namePos.x, y: namePos.y }}
@@ -149,7 +150,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                       <option value="XXL">XXL - Double Extra Large</option>
                     </select>
                   </div>
-                  
+
                   <div className="flex gap-4">
                     <div className="flex-1">
                       <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Police</label>
@@ -178,14 +179,13 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={handleAddToCart}
                 disabled={isCapturing}
-                className={`mt-8 w-full py-4 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center border ${
-                  isCapturing 
-                  ? 'bg-gray-700 border-gray-600 cursor-wait' 
-                  : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
-                }`}
+                className={`mt-8 w-full py-4 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center border ${isCapturing
+                    ? 'bg-gray-700 border-gray-600 cursor-wait'
+                    : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                  }`}
               >
                 {isCapturing ? 'Capture...' : 'Intégrer au Panier'}
               </button>

@@ -39,7 +39,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
       if (previewRef.current) {
         previewBase64 = await htmlToImage.toPng(previewRef.current, {
           pixelRatio: 2,
-          quality: 1
+          quality: 1,
+          cacheBust: true
         });
       }
     } catch (error) {
@@ -90,6 +91,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
             <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r">
               <div ref={previewRef} className="relative w-[300px] h-[400px]">
                 <img
+                  crossOrigin="anonymous"
                   src={product.custom_image_url ? `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.custom_image_url}` : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.image_url}`}
                   alt={product.name}
                   className="w-full h-full object-contain pointer-events-none drop-shadow-2xl"
@@ -183,8 +185,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                 onClick={handleAddToCart}
                 disabled={isCapturing}
                 className={`mt-8 w-full py-4 text-white rounded-xl font-bold uppercase tracking-widest text-sm shadow-xl transition-all block text-center border ${isCapturing
-                    ? 'bg-gray-700 border-gray-600 cursor-wait'
-                    : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                  ? 'bg-gray-700 border-gray-600 cursor-wait'
+                  : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
                   }`}
               >
                 {isCapturing ? 'Capture...' : 'Intégrer au Panier'}

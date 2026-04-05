@@ -64,14 +64,12 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     alert("Produit ajouté à l'arsenal !");
   };
 
-  // On prépare le lien complet proprement
+  // On prépare le lien vers notre nouvelle API Laravel !
   const BACKEND_URL = 'https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net';
   const targetPath = product.custom_image_url ? product.custom_image_url : product.image_url;
-  const originalImageUrl = `${BACKEND_URL}${targetPath}`;
 
-  // LA MAGIE : On passe par un proxy public pour obtenir le droit de capture !
-  // Le proxy AllOrigins (beaucoup plus fiable pour éviter l'erreur 403)
-  const proxiedImageUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalImageUrl)}`;
+  // Utilisation de la nouvelle route Laravel qui gère le CORS
+  const finalImageUrl = `${BACKEND_URL}/api/proxy-image?url=${encodeURIComponent(targetPath)}`;
 
   return (
     <AnimatePresence>
@@ -101,11 +99,10 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
               <div ref={previewRef} className="relative w-[300px] h-[400px]">
                 <img
                   crossOrigin="anonymous"
-                  src={proxiedImageUrl}
+                  src={finalImageUrl}
                   alt={product.name}
                   className="w-full h-full object-contain pointer-events-none drop-shadow-2xl"
                 />
-
 
                 <Rnd
                   size={{ width: 'auto', height: 'auto' }}

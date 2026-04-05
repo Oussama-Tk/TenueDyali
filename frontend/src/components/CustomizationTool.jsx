@@ -64,6 +64,14 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     alert("Produit ajouté à l'arsenal !");
   };
 
+  // On prépare le lien complet proprement
+  const BACKEND_URL = 'https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net';
+  const targetPath = product.custom_image_url ? product.custom_image_url : product.image_url;
+  const originalImageUrl = `${BACKEND_URL}${targetPath}`;
+
+  // LA MAGIE : On passe par un proxy public pour obtenir le droit de capture !
+  const proxiedImageUrl = `https://corsproxy.io/?${encodeURIComponent(originalImageUrl)}`;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -91,7 +99,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
             <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r">
               <div ref={previewRef} className="relative w-[300px] h-[400px]">
                 <img
-                  src={product.custom_image_url ? `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.custom_image_url}` : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.image_url}`}
+                  crossOrigin="anonymous"
+                  src={proxiedImageUrl}
                   alt={product.name}
                   className="w-full h-full object-contain pointer-events-none drop-shadow-2xl"
                 />

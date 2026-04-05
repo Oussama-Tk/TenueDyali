@@ -70,7 +70,8 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
   const originalImageUrl = `${BACKEND_URL}${targetPath}`;
 
   // LA MAGIE : On passe par un proxy public pour obtenir le droit de capture !
-  const proxiedImageUrl = `https://corsproxy.io/?${encodeURIComponent(originalImageUrl)}`;
+  // Le proxy AllOrigins (beaucoup plus fiable pour éviter l'erreur 403)
+  const proxiedImageUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalImageUrl)}`;
 
   return (
     <AnimatePresence>

@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/storage': {
-        target: 'http://localhost:8000',
+        target: 'https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net',
         changeOrigin: true
       }
     }

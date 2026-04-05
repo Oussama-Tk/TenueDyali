@@ -83,7 +83,7 @@ export default function Home() {
                   <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
                     <div className="bg-gray-800/50 rounded-xl mb-6 overflow-hidden h-72 flex items-center justify-center relative">
                       <img
-                        src={p.image_url?.startsWith('http') ? p.image_url : `http://localhost:8000${p.image_url}`}
+                        src={p.image_url?.startsWith('http') ? p.image_url : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.image_url}`}
                         alt={p.name}
                         className="h-full w-full object-cover group-hover:scale-110 smooth-transitions"
                       />

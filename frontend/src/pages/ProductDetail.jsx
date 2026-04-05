@@ -37,7 +37,7 @@ export default function ProductDetail() {
             {/* Subtle inner glow behind image */}
             <div className="absolute inset-0 bg-gradient-to-tr from-gray-800 to-gray-900" />
             <img
-              src={product.image_url?.startsWith('http') ? product.image_url : `http://localhost:8000${product.image_url}`}
+              src={product.image_url?.startsWith('http') ? product.image_url : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${product.image_url}`}
               alt={product.name}
               className={`relative z-10 max-w-full h-auto max-h-[500px] object-cover rounded-2xl drop-shadow-2xl transform hover:scale-105 smooth-transitions ${!isAvailable && 'grayscale opacity-50'}`}
             />
@@ -63,8 +63,8 @@ export default function ProductDetail() {
               onClick={() => setIsCustomizing(true)}
               disabled={!isAvailable}
               className={`w-full py-5 rounded-xl font-black text-lg uppercase tracking-widest transition-all duration-300 ease-in-out block text-center ${isAvailable
-                  ? 'bg-gray-800 text-white border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
-                  : 'bg-gray-800/50 text-gray-600 border border-gray-800 cursor-not-allowed'
+                ? 'bg-gray-800 text-white border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                : 'bg-gray-800/50 text-gray-600 border border-gray-800 cursor-not-allowed'
                 }`}
             >
               {isAvailable ? 'Déployer la Personnalisation' : 'Arsenal Insuffisant'}

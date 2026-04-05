@@ -83,7 +83,7 @@ export default function Cart() {
                   {item.customization?.preview_image_base64 ? (
                     <img src={item.customization.preview_image_base64} alt="Maillot Customisé" className="w-full h-full object-contain bg-gray-300" />
                   ) : (
-                    <img src={item.product.image_url?.startsWith('http') ? item.product.image_url : `http://localhost:8000${item.product.image_url}`} alt="Maillot" className="w-full h-full object-cover" />
+                    <img src={item.product.image_url?.startsWith('http') ? item.product.image_url : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${item.product.image_url}`} alt="Maillot" className="w-full h-full object-cover" />
                   )}
                 </div>
                 <div>
@@ -113,8 +113,8 @@ export default function Cart() {
               onClick={handleCheckout}
               disabled={isCheckingOut}
               className={`w-full md:w-auto px-10 py-5 text-white rounded-xl font-bold text-sm shadow-xl transition-all uppercase tracking-widest border ${isCheckingOut
-                  ? 'bg-gray-700 border-gray-600 cursor-wait'
-                  : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
+                ? 'bg-gray-700 border-gray-600 cursor-wait'
+                : 'bg-gray-800 border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'
                 }`}
             >
               {isCheckingOut ? 'Validation...' : 'Valider le Panier'}

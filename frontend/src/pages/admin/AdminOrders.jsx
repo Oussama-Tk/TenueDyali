@@ -61,8 +61,8 @@ export default function AdminOrders() {
                   {cust.preview_image && (
                     <div className="w-full mt-3 flex flex-col items-start">
                       <p className="text-xs font-bold text-royal-green-500 mb-2 uppercase tracking-widest">Maquette Générée</p>
-                      <a href={`http://localhost:8000${cust.preview_image}`} download target="_blank" rel="noreferrer" className="inline-block border border-gray-700 bg-gray-800 p-2 rounded-xl hover:border-royal-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] transition-all">
-                        <img src={`http://localhost:8000${cust.preview_image}`} alt="Preview" className="h-40 w-auto object-contain rounded" />
+                      <a href={`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${cust.preview_image}`} download target="_blank" rel="noreferrer" className="inline-block border border-gray-700 bg-gray-800 p-2 rounded-xl hover:border-royal-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] transition-all">
+                        <img src={`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${cust.preview_image}`} alt="Preview" className="h-40 w-auto object-contain rounded" />
                         <div className="text-center text-xs font-bold text-white mt-2 uppercase tracking-wider">Télécharger .PNG</div>
                       </a>
                     </div>

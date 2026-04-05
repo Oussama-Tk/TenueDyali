@@ -166,10 +166,10 @@ export default function AdminProducts() {
               {products.map((p) => (
                 <tr key={p.id} className="hover:bg-gray-800/50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {p.image_url ? <img src={`http://localhost:8000${p.image_url}`} alt={p.name} className="h-14 w-14 object-cover rounded-md border border-gray-700 shadow-md" /> : <span className="text-gray-600 text-sm italic">Aucun</span>}
+                    {p.image_url ? <img src={`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.image_url}`} alt={p.name} className="h-14 w-14 object-cover rounded-md border border-gray-700 shadow-md" /> : <span className="text-gray-600 text-sm italic">Aucun</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {p.custom_image_url ? <img src={`http://localhost:8000${p.custom_image_url}`} alt="Dos" className="h-14 w-14 object-cover rounded-md border border-blue-900 shadow-md" /> : <span className="text-gray-600 text-sm italic">Aucun</span>}
+                    {p.custom_image_url ? <img src={`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.custom_image_url}`} alt="Dos" className="h-14 w-14 object-cover rounded-md border border-blue-900 shadow-md" /> : <span className="text-gray-600 text-sm italic">Aucun</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-bold text-white uppercase tracking-wider">{p.name}</div>

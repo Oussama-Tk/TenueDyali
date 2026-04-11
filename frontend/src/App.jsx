@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ToastContainer from './components/ToastContainer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
@@ -17,6 +18,7 @@ import AdminMessages from './pages/admin/AdminMessages';
 function App() {
   return (
     <>
+      <ToastContainer />
       <Routes>
         {/* Public Routes with Navbar and Footer */}
         <Route path="/" element={<div className="flex flex-col min-h-screen"><Navbar /><Home /><Footer /></div>} />

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { background: #333; color: white; padding: 50px; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Our SVG snippet -->
+    <svg width="288" height="66" style="overflow: visible; border: 1px solid red;">
+      <defs>
+        <path id="curve-path" d="M 0,60 Q 144,0 288,60" />
+      </defs>
+      <text style="font-size: 30px; fill: white; font-weight: bold; text-transform: uppercase;" text-anchor="middle">
+        <textPath href="#curve-path" startOffset="50%">
+          VOTRE NOM
+        </textPath>
+      </text>
+    </svg>
+</body>
+</html>

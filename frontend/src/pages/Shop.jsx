@@ -28,7 +28,7 @@ export default function Shop() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, staggerChildren: 0.15 }}
@@ -40,8 +40,8 @@ export default function Shop() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: idx * 0.1 }}
             >
-              <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 shadow-md smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
-                <div className="bg-gray-800/40 rounded-xl mb-5 overflow-hidden h-72 flex items-center justify-center relative">
+              <Link to={`/shop/${p.id}`} className="flex flex-col h-full bg-gray-900 rounded-2xl p-5 border border-gray-800 shadow-md smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
+                <div className="bg-gray-800/40 rounded-xl mb-5 overflow-hidden h-48 sm:h-96 flex items-center justify-center relative">
                   <img
                     src={p.image_url ? `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.image_url}` : ''}
                     alt={p.name}
@@ -56,9 +56,9 @@ export default function Shop() {
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
                   )}
                 </div>
-                <div className="relative z-10 px-2 pb-2">
+                <div className="relative z-10 px-2 pb-2 flex flex-col flex-1">
                   <h2 className="text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors uppercase tracking-wide">{p.name}</h2>
-                  <p className="text-xl font-semibold text-royal-green-500 mt-2 tracking-widest">{p.price} MAD</p>
+                  <p className="text-xl font-semibold text-royal-green-500 mt-2 tracking-widest mt-auto pt-4">{p.price} MAD</p>
                 </div>
               </Link>
             </motion.div>

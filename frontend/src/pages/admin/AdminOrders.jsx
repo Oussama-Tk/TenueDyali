@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useToastStore } from '../../store/useToastStore';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -36,8 +37,9 @@ export default function AdminOrders() {
                       try {
                         await axios.delete(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/admin/orders/${order.id}`);
                         setOrders(orders.filter(o => o.id !== order.id));
+                        useToastStore.getState().addToast('Opération supprimée.', 'success');
                       } catch (err) {
-                        alert('Erreur lors de la suppression.');
+                        useToastStore.getState().addToast('Erreur lors de la suppression.', 'error');
                       }
                     }
                   }}

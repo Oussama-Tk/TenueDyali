@@ -4,8 +4,9 @@ import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function Navbar() {
-  const { cart, clearCart } = useCartStore();
+  const { userCarts } = useCartStore();
   const { user, logout } = useAuthStore();
+  const cart = userCarts?.[user?.id || 'guest'] || [];
 
   return (
     <nav className="fixed w-full z-50 glass-dark">
@@ -32,7 +33,7 @@ export default function Navbar() {
             {user ? (
               <div className="hidden md:flex items-center gap-4">
                 <span className="text-royal-green-500 font-bold text-xs uppercase tracking-widest">{user.username}</span>
-                <button onClick={() => { clearCart(); logout(); }} className="flex items-center gap-2 text-gray-400 text-sm font-semibold hover:text-red-500 transition-colors duration-300">
+                <button onClick={() => { logout(); }} className="flex items-center gap-2 text-gray-400 text-sm font-semibold hover:text-red-500 transition-colors duration-300">
                   Déconnexion <LogOut size={16} />
                 </button>
               </div>

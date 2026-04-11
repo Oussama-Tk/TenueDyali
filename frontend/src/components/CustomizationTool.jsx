@@ -6,6 +6,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import { useToastStore } from '../store/useToastStore';
+
+const renderText = (text, isCurved, size, font, color) => {
+  if (!text) return null;
+  const numSize = Number(size);
+  if (!isCurved) return <div style={{ fontFamily: font, color: color, fontSize: `${numSize}px`, lineHeight: 1 }} className="font-bold uppercase drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] whitespace-nowrap">{text}</div>;
+  
+  // Calculate dynamic dimensions for the SVG arch
+  const charWidthApprox = numSize * 0.8;
+  const width = Math.max(250, text.length * charWidthApprox * 1.2);
+  const curveDepth = numSize * 0.8; 
+  const height = numSize + curveDepth * 1.5;
+  const startY = height - numSize * 0.2;
+  const controlY = startY - curveDepth * 2.5;
+
+  const pathId = `curve-path`;
+
+  return (
+    <svg width={width} height={height} className="overflow-visible drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] pointer-events-none">
+      <defs>
+        <path id={pathId} d={`M 0,${startY} Q ${width/2},${controlY} ${width},${startY}`} />
+      </defs>
+      <text style={{ fontFamily: font, fontSize: `${numSize}px`, fill: color, fontWeight: 'bold', textTransform: 'uppercase' }} textAnchor="middle">
+        <textPath href={`#${pathId}`} startOffset="50%">
+          {text}
+        </textPath>
+      </text>
+    </svg>
+  );
+};
 
 export default function CustomizationTool({ product, isOpen, onClose }) {
   const { addToCart } = useCartStore();
@@ -14,6 +44,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
   const previewRef = useRef(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [name, setName] = useState('VOTRE NOM');
+  const [nameSec, setNameSec] = useState('');
   const [number, setNumber] = useState('10');
   const [font, setFont] = useState('Arial');
   const [color, setColor] = useState('#ffffff');
@@ -21,10 +52,12 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
 
   const [nameSize, setNameSize] = useState(24);
   const [numberSize, setNumberSize] = useState(60);
+  const [isCurved, setIsCurved] = useState(false);
 
   // Pos default
   const [namePos, setNamePos] = useState({ x: 100, y: 150 });
   const [numPos, setNumPos] = useState({ x: 120, y: 220 });
+  const [nameSecPos, setNameSecPos] = useState({ x: 100, y: 150 });
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -44,7 +77,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
         });
       }
     } catch (error) {
-      alert("Erreur de capture photo : " + error.message);
+      useToastStore.getState().addToast("Erreur de capture photo : " + error.message, 'error');
       console.error("Erreur capture", error);
     }
     setIsCapturing(false);
@@ -61,7 +94,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     };
     addToCart(product, customization);
     onClose();
-    alert("Produit ajouté à l'arsenal !");
+    useToastStore.getState().addToast("Produit ajouté à l'arsenal !", 'success');
   };
 
   // On prépare le lien vers notre nouvelle API Laravel !
@@ -95,9 +128,11 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
             </button>
 
             {/* Zone de prévisualisation (Drag & Drop) */}
-            <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r">
-              <div ref={previewRef} className="relative w-[300px] h-[400px]">
-                <img
+            <div className="flex-1 bg-gray-200 relative overflow-hidden flex items-center justify-center border-b border-gray-300 md:border-b-0 md:border-r min-h-[450px] md:min-h-0">
+              <div className="absolute flex items-center justify-center w-full h-[450px] md:h-full">
+                <div className="transform scale-[0.55] sm:scale-[0.7] lg:scale-100 origin-center transition-transform">
+                  <div ref={previewRef} className="relative w-[550px] h-[750px] bg-gray-200">
+                    <img
                   crossOrigin="anonymous"
                   src={finalImageUrl}
                   alt={product.name}
@@ -111,9 +146,16 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                   bounds="parent"
                   className="cursor-move hover:ring-2 hover:ring-royal-green-500/50 rounded transition-shadow"
                 >
-                  <div style={{ fontFamily: font, color: color, fontSize: `${nameSize}px`, lineHeight: 1 }} className="font-bold uppercase drop-shadow-md whitespace-nowrap">
-                    {name}
-                  </div>
+                  {renderText(name, isCurved, nameSize, font, color)}
+                </Rnd>
+                <Rnd
+                  size={{ width: 'auto', height: 'auto' }}
+                  position={{ x: nameSecPos.x, y: nameSecPos.y }}
+                  onDragStop={(e, d) => setNameSecPos({ x: d.x, y: d.y })}
+                  bounds="parent"
+                  className="cursor-move hover:ring-2 hover:ring-royal-green-500/50 rounded transition-shadow"
+                >
+                  {renderText(nameSec, false, nameSize, font, color)}
                 </Rnd>
 
                 <Rnd
@@ -123,11 +165,13 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                   bounds="parent"
                   className="cursor-move hover:ring-2 hover:ring-royal-green-500/50 rounded transition-shadow"
                 >
-                  <div style={{ fontFamily: font, color: color, fontSize: `${numberSize}px`, lineHeight: 1 }} className="font-black drop-shadow-md whitespace-nowrap">
+                  <div style={{ fontFamily: font, color: color, fontSize: `${numberSize}px`, lineHeight: 1 }} className="font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] whitespace-nowrap">
                     {number}
                   </div>
                 </Rnd>
               </div>
+             </div>
+            </div>
             </div>
 
             {/* Contrôles */}
@@ -142,6 +186,18 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                   <div>
                     <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Nom sur le maillot</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={12} className="w-full p-3 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_10px_rgba(34,197,94,0.3)] outline-none transition-all" />
+                    
+                    <label className="mt-3 flex items-center gap-3 cursor-pointer group">
+                      <div className="relative flex items-center justify-center">
+                        <input type="checkbox" checked={isCurved} onChange={(e) => setIsCurved(e.target.checked)} className="peer appearance-none w-5 h-5 border-2 border-gray-600 rounded-md bg-gray-950 checked:bg-royal-green-500 checked:border-royal-green-500 transition-all cursor-pointer" />
+                        <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+                      <span className="text-sm font-semibold text-gray-300 group-hover:text-white transition-colors">Courber le texte</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Deuxième texte (Optionnel)</label>
+                    <input type="text" value={nameSec} onChange={(e) => setNameSec(e.target.value)} maxLength={12} className="w-full p-3 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_10px_rgba(34,197,94,0.3)] outline-none transition-all" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Numéro</label>
@@ -164,8 +220,17 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                       <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Police</label>
                       <select value={font} onChange={(e) => setFont(e.target.value)} className="w-full p-3 bg-gray-950 text-white border border-gray-800 rounded-xl focus:border-royal-green-500 focus:shadow-[0_0_10px_rgba(34,197,94,0.3)] outline-none transition-all cursor-pointer">
                         <option value="Arial">Standard (Arial)</option>
+                        <option value="Helvetica">Épuré (Helvetica)</option>
                         <option value="Impact">Sport (Impact)</option>
+                        <option value="Arial Black">Massif (Arial Black)</option>
+                        <option value="Trebuchet MS">Dynamique (Trebuchet)</option>
                         <option value="Times New Roman">Classique (Times)</option>
+                        <option value="Verdana">Large (Verdana)</option>
+                        <option value="Tahoma">Net (Tahoma)</option>
+                        <option value="Georgia">Élégant (Georgia)</option>
+                        <option value="Courier New">Rétro (Courier)</option>
+                        <option value="Copperplate, 'Copperplate Gothic Light', fantasy">Copperplate (Premium)</option>
+                        <option value="'Trebuchet MS', sans-serif">Trebuchet (Dynamique)</option>
                       </select>
                     </div>
                     <div className="w-24">
@@ -181,7 +246,7 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
                     </div>
                     <div className="flex-1">
                       <label className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Taille N°: {numberSize}px</label>
-                      <input type="range" min="20" max="150" value={numberSize} onChange={(e) => setNumberSize(e.target.value)} className="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-royal-green-500 mt-3" />
+                      <input type="range" min="20" max="200" value={numberSize} onChange={(e) => setNumberSize(e.target.value)} className="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-royal-green-500 mt-3" />
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Trash2, Upload, CheckCircle, XCircle } from 'lucide-react';
+import { useToastStore } from '../../store/useToastStore';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -52,19 +53,19 @@ export default function AdminProducts() {
         await axios.post(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products/${editingId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        alert('Produit modifié !');
+        useToastStore.getState().addToast('Produit modifié !', 'success');
       } else {
         await axios.post('https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        alert('Produit ajouté !');
+        useToastStore.getState().addToast('Produit ajouté !', 'success');
       }
 
       setEditingId(null);
       setName(''); setPrice(''); setDescription(''); setImage(null); setCustomImage(null); setIsAvailable(true);
       fetchProducts();
     } catch (err) {
-      alert('Erreur lors de la sauvegarde');
+      useToastStore.getState().addToast('Erreur lors de la sauvegarde', 'error');
     }
   };
 
@@ -73,8 +74,9 @@ export default function AdminProducts() {
       try {
         await axios.delete(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products/${id}`);
         fetchProducts();
+        useToastStore.getState().addToast('Produit supprimé', 'success');
       } catch (err) {
-        alert('Erreur lors de la suppression');
+        useToastStore.getState().addToast('Erreur lors de la suppression', 'error');
       }
     }
   };

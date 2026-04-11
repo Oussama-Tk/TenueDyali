@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore';
+import { useToastStore } from '../store/useToastStore';
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart } = useCartStore();
+  const { userCarts, removeFromCart, clearCart } = useCartStore();
   const { user, token } = useAuthStore();
+  const cart = userCarts?.[user?.id || 'guest'] || [];
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const total = cart.reduce((acc, item) => acc + parseFloat(item.product.price || 0), 0);
@@ -30,7 +32,7 @@ export default function Cart() {
         }
       });
 
-      alert("Processus de caisse initié avec succès ! Commande enregistrée.");
+      useToastStore.getState().addToast("Processus de caisse initié avec succès ! Commande enregistrée.", 'success');
       clearCart();
     } catch (err) {
       console.error(err);
@@ -43,7 +45,7 @@ export default function Cart() {
           errorMsg += "\n" + err.response.data.error;
         }
       }
-      alert(errorMsg);
+      useToastStore.getState().addToast(errorMsg, 'error');
     } finally {
       setIsCheckingOut(false);
     }

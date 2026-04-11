@@ -4,11 +4,16 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircle, XCircle } from 'lucide-react';
 import CustomizationTool from '../components/CustomizationTool';
+import { useAuthStore } from '../store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
+import { useToastStore } from '../store/useToastStore';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [isCustomizing, setIsCustomizing] = useState(false);
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net/api/products/${id}`)
@@ -60,7 +65,14 @@ export default function ProductDetail() {
             <p className="text-gray-400 text-lg mb-10 leading-relaxed font-light whitespace-pre-wrap">{product.description}</p>
 
             <button
-              onClick={() => setIsCustomizing(true)}
+              onClick={() => {
+                if (!user) {
+                  useToastStore.getState().addToast('Identification requise pour déployer l\'arsenal de personnalisation.', 'error');
+                  navigate('/login');
+                } else {
+                  setIsCustomizing(true);
+                }
+              }}
               disabled={!isAvailable}
               className={`w-full py-5 rounded-xl font-black text-lg uppercase tracking-widest transition-all duration-300 ease-in-out block text-center ${isAvailable
                 ? 'bg-gray-800 text-white border border-gray-700 hover:bg-gray-900 hover:text-royal-green-400 hover:border-royal-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:-translate-y-1'

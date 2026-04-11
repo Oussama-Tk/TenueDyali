@@ -32,7 +32,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-8 max-w-4xl"
             >
-              <h1 className="text-5xl md:text-8xl font-extrabold text-white tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-8xl font-extrabold text-white tracking-tight leading-tight">
                 L'ÉLITE DU <br />
                 <span className="text-transparent bg-clip-text gradient-royal neon-text">MAILLOT SUR MESURE</span>
               </h1>
@@ -66,7 +66,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+              className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -80,8 +80,8 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Link to={`/shop/${p.id}`} className="block bg-gray-900 rounded-2xl p-5 border border-gray-800 smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
-                    <div className="bg-gray-800/50 rounded-xl mb-6 overflow-hidden h-72 flex items-center justify-center relative">
+                  <Link to={`/shop/${p.id}`} className="flex flex-col h-full bg-gray-900 rounded-2xl p-3 sm:p-5 border border-gray-800 smooth-transitions transform hover:-translate-y-3 group hover:neon-border relative overflow-hidden">
+                    <div className="bg-gray-800/50 rounded-xl mb-3 sm:mb-6 overflow-hidden h-40 sm:h-72 flex items-center justify-center relative">
                       <img
                         src={p.image_url?.startsWith('http') ? p.image_url : `https://api-tenuedyali-auaqexd7b2ajfbd7.canadacentral-01.azurewebsites.net${p.image_url}`}
                         alt={p.name}
@@ -89,9 +89,9 @@ export default function Home() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
                     </div>
-                    <div className="relative z-10">
-                      <h3 className="text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors">{p.name}</h3>
-                      <p className="text-xl font-semibold text-royal-green-500 mt-2">{p.price} MAD</p>
+                    <div className="relative z-10 px-1 pb-1 sm:px-2 sm:pb-2 flex flex-col flex-1">
+                      <h3 className="text-sm sm:text-2xl font-bold text-white group-hover:text-royal-green-400 transition-colors uppercase tracking-wide leading-tight">{p.name}</h3>
+                      <p className="text-xs sm:text-xl font-semibold text-royal-green-500 mt-1 sm:mt-2 tracking-widest mt-auto pt-2 sm:pt-4">{p.price} MAD</p>
                     </div>
                   </Link>
                 </motion.div>

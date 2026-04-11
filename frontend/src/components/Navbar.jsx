@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, LogOut } from 'lucide-react';
+import { ShoppingCart, Menu, LogOut, X } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -7,6 +8,9 @@ export default function Navbar() {
   const { userCarts } = useCartStore();
   const { user, logout } = useAuthStore();
   const cart = userCarts?.[user?.id || 'guest'] || [];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const closeMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <nav className="fixed w-full z-50 glass-dark">
@@ -48,12 +52,40 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button className="md:hidden text-gray-300 hover:text-royal-green-500 transition-colors duration-300">
-              <Menu size={24} />
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+              className="md:hidden text-gray-300 hover:text-royal-green-500 transition-colors duration-300"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-gray-950 border-b border-gray-800 absolute w-full left-0 top-20 shadow-2xl">
+          <div className="px-4 pt-2 pb-6 flex flex-col space-y-4">
+            <Link to="/" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">Accueil</Link>
+            <Link to="/shop" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">Boutique</Link>
+            <Link to="/about" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">À propos</Link>
+            <Link to="/contact" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">Contact</Link>
+            
+            {user ? (
+              <div className="flex justify-between items-center pt-4">
+                <span className="text-royal-green-500 font-bold text-sm uppercase tracking-widest">{user.username}</span>
+                <button onClick={() => { logout(); closeMenu(); }} className="flex items-center gap-2 text-red-400 font-semibold hover:text-red-500 transition-colors">
+                  Déconnexion <LogOut size={18} />
+                </button>
+              </div>
+            ) : (
+              <div className="pt-4">
+                <Link to="/login" onClick={closeMenu} className="block w-full text-center py-3 bg-royal-green-500 text-gray-950 rounded-xl font-bold uppercase tracking-wider hover:bg-royal-green-400 transition-colors">Connexion</Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

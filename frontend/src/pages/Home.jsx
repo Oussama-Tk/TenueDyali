@@ -49,7 +49,7 @@ export default function Home() {
         </section>
 
         {/* Featured Products Section */}
-        <section className="py-24 bg-gray-950 relative">
+        <section className="py-24 bg-gray-950 relative overflow-hidden">
           {/* Subtle glow effect in the background */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-royal-green-900/20 blur-[120px] rounded-full pointer-events-none" />
 
@@ -148,7 +148,7 @@ export default function Home() {
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-24 bg-gray-900 border-t border-gray-800 relative">
+        <section className="py-24 bg-gray-900 border-t border-gray-800 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="text-center mb-16"

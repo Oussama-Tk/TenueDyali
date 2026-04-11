@@ -5,16 +5,23 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore';
 import { useToastStore } from '../store/useToastStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   const { userCarts, removeFromCart, clearCart } = useCartStore();
   const { user, token } = useAuthStore();
+  const navigate = useNavigate();
   const cart = userCarts?.[user?.id || 'guest'] || [];
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const total = cart.reduce((acc, item) => acc + parseFloat(item.product.price || 0), 0);
 
   const handleCheckout = async () => {
+    if (!user || !token) {
+      useToastStore.getState().addToast("Veuillez vous connecter pour valider votre commande.", 'error');
+      navigate('/login');
+      return;
+    }
     try {
       setIsCheckingOut(true);
 

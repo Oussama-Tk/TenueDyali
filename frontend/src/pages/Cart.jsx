@@ -44,13 +44,19 @@ export default function Cart() {
     } catch (err) {
       console.error(err);
       let errorMsg = "Erreur lors de la validation du panier.";
-      if (err.response && err.response.data) {
-        if (err.response.data.message) {
+      if (err.response) {
+        if (err.response.data?.message) {
           errorMsg += "\n" + err.response.data.message;
+        } else if (typeof err.response.data === 'string') {
+          // Si c'est une erreur serveur brute (ex: 413 Payload Too Large)
+          errorMsg += `\nErreur serveur (Code ${err.response.status}).`;
         }
-        if (err.response.data.error) {
+        if (err.response.data?.error) {
           errorMsg += "\n" + err.response.data.error;
         }
+      } else {
+        // Erreur réseau (ex: CORS)
+        errorMsg += `\nProblème réseau : ${err.message}. (Si vous êtes sur localhost, cela peut être dû à une restriction CORS du serveur Azure).`;
       }
       useToastStore.getState().addToast(errorMsg, 'error');
     } finally {

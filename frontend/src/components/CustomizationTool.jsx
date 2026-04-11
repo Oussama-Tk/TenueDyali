@@ -70,10 +70,11 @@ export default function CustomizationTool({ product, isOpen, onClose }) {
     let previewBase64 = null;
     try {
       if (previewRef.current) {
-        previewBase64 = await htmlToImage.toPng(previewRef.current, {
-          pixelRatio: 2,
-          quality: 1,
-          cacheBust: true
+        previewBase64 = await htmlToImage.toJpeg(previewRef.current, {
+          pixelRatio: 1,
+          quality: 0.6,
+          cacheBust: true,
+          backgroundColor: '#ffffff'
         });
       }
     } catch (error) {

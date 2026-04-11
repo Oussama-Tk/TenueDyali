@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import LoadingIndicator from "../components/LoadingIndicator";
 import axios from 'axios';
 
 export default function Shop() {
@@ -66,8 +67,11 @@ export default function Shop() {
         </motion.div>
 
         {products.length === 0 && (
-          <div className="text-center py-20 text-gray-500 text-xl font-light">
-            Chargement de l'arsenal...
+          <div className="py-20 flex flex-col items-center justify-center">
+            <LoadingIndicator className="w-16 h-16 text-royal-green-500 mb-6 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+            <div className="text-xl font-bold text-royal-green-500 tracking-widest uppercase animate-pulse text-center">
+              Chargement de l'arsenal...
+            </div>
           </div>
         )}
       </div>

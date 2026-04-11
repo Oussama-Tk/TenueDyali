@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import LoadingIndicator from "../components/LoadingIndicator";
 import { CheckCircle, XCircle } from 'lucide-react';
 import CustomizationTool from '../components/CustomizationTool';
 import { useAuthStore } from '../store/useAuthStore';
@@ -21,7 +22,16 @@ export default function ProductDetail() {
       .catch(err => console.error(err));
   }, [id]);
 
-  if (!product) return <div className="pt-32 min-h-screen bg-gray-950 text-center text-xl font-bold text-royal-green-500 neon-text">Acquisition des données...</div>;
+  if (!product) {
+    return (
+      <div className="pt-32 min-h-screen bg-gray-950 flex flex-col items-center justify-start">
+        <LoadingIndicator className="w-16 h-16 text-royal-green-500 mb-6 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+        <div className="text-xl font-bold text-royal-green-500 tracking-widest uppercase animate-pulse">
+          Chargement du Produit ...
+        </div>
+      </div>
+    );
+  }
 
   const isAvailable = product.is_available === 1 || product.is_available === true;
 

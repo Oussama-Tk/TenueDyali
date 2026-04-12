@@ -18,7 +18,7 @@ export default function Navbar() {
         <div className="flex justify-between h-20 items-center">
           <div className="flex-shrink-0 flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2 hover:scale-105 smooth-transitions">
-              <img src="/logo.png" alt="TenueDyali Logo" className="h-10 w-auto" />
+              <img src="/logo.png" alt="TenueDyali Logo" className="h-20 w-auto" />
               {/* Le texte reste en backup ou décoratif, on peut le masquer avec hidden si l'image suffit */}
               <span className="text-2xl font-bold bg-clip-text text-transparent gradient-royal hidden sm:block neon-text">
                 TenueDyali
@@ -52,8 +52,8 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden text-gray-300 hover:text-royal-green-500 transition-colors duration-300"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -70,7 +70,7 @@ export default function Navbar() {
             <Link to="/shop" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">Boutique</Link>
             <Link to="/about" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">À propos</Link>
             <Link to="/contact" onClick={closeMenu} className="text-gray-300 hover:text-royal-green-500 transition-colors font-medium text-lg uppercase tracking-wider block py-2 border-b border-gray-800">Contact</Link>
-            
+
             {user ? (
               <div className="flex justify-between items-center pt-4">
                 <span className="text-royal-green-500 font-bold text-sm uppercase tracking-widest">{user.username}</span>
